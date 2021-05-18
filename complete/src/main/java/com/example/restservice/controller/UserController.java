@@ -1,6 +1,5 @@
 package com.example.restservice.controller;
 
-import com.example.restservice.model.Car;
 import com.example.restservice.model.User;
 import com.example.restservice.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,12 +12,12 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @GetMapping("/users")
+    @RequestMapping(value = "/users", method = RequestMethod.GET)
     public List<User> getAllUsers() {
         return userService.getAllUsers();
     }
 
-    @GetMapping("/admins")
+    @RequestMapping(value = "/admins", method = RequestMethod.GET)
     public List<User> getAllAdmins() {
         return userService.getAllAdmins();
     }
@@ -29,7 +28,7 @@ public class UserController {
         return userService.loginUser(user);
     }
 
-    @GetMapping("/users/my")
+    @RequestMapping(value = "/users/my", method = RequestMethod.GET)
     public User getMyUser(){
         return userService.getMy();
     }

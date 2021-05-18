@@ -12,7 +12,7 @@ import java.util.Optional;
 @Service
 public class UserService {
 
-    public User currentUser;
+    private User currentUser;
 
     @Autowired
     private UserRepo userRepo;
@@ -25,12 +25,19 @@ public class UserService {
     }
 
     public boolean registerUser(User user) {
-        userRepo.save(user);
-        return true;
+        if(userRepo.findByUsername(user.getUsername()) == null){
+            userRepo.save(user);
+            return true;
+        }
+        return false;
+
     }
 
     public User loginUser(User user){
         currentUser = userRepo.findByUsername(user.getUsername());
+        if(userRepo.findByUsername(user.getUsername()) == null){
+            return null;
+        }
         return currentUser;
     }
 
@@ -51,6 +58,8 @@ public class UserService {
     public User getMy(){
         return currentUser;
     }
+
+
 
     public void setCurrentUser(User user) {
         currentUser = user;

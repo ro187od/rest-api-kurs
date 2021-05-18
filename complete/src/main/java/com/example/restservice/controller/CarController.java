@@ -6,7 +6,6 @@ import com.example.restservice.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -17,7 +16,7 @@ public class CarController {
     @Autowired
     private UserService userService;
 
-    @GetMapping("/cars")
+    @RequestMapping(value = "/cars", method = RequestMethod.GET)
     public List<Car> getAll(){
         return carService.getAllCars();
     }
@@ -37,7 +36,7 @@ public class CarController {
         carService.deleteCar(id);
     }
 
-    @GetMapping("/cars/my")
+    @RequestMapping(value = "/cars/my", method = RequestMethod.GET)
     public List<Car> getAllMy(){
         return carService.getAllMyCars();
     }

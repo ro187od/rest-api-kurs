@@ -1,14 +1,11 @@
 package com.example.restservice.service;
 
 import com.example.restservice.model.Car;
-import com.example.restservice.model.User;
 import com.example.restservice.repo.CarRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.validation.Valid;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class CarService {
@@ -33,20 +30,26 @@ public class CarService {
     }
 
     public void updateCar(Car car) {
-        carRepo.save(car);
+        if (userService.getMy().getId() == car.getOwner().getId()) {
+            carRepo.save(car);
+        }
     }
 
     public List<Car> getAllMyCars() {
-        return carRepo.findByOwner(userService.currentUser);
+        return carRepo.findByOwner(userService.getMy());
     }
 
     public void deactivateCar(Car car) {
-        car.setActive(false);
-        carRepo.save(car);
+        if (userService.getMy().getId() == car.getOwner().getId()){
+            car.setActive(false);
+            carRepo.save(car);
+        }
     }
 
     public void activateCar(Car car) {
-        car.setActive(true);
-        carRepo.save(car);
+        if (userService.getMy().getId() == car.getOwner().getId()) {
+            car.setActive(true);
+            carRepo.save(car);
+        }
     }
 }
