@@ -2,13 +2,12 @@ package com.example.restservice.service;
 
 import com.example.restservice.model.Role;
 import com.example.restservice.model.User;
-import com.example.restservice.repo.CarRepo;
+import com.example.restservice.model.UserStatus;
 import com.example.restservice.repo.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class UserService {
@@ -36,12 +35,15 @@ public class UserService {
 
     }
 
-    public User loginUser(User user){
+    public UserStatus loginUser(User user){
         currentUser = userRepo.findByUsername(user.getUsername());
-        if(userRepo.findByUsername(user.getUsername()) == null){
-            return null;
+        if(currentUser.getRole().equals(Role.ADMIN)){
+            return UserStatus.CREATED_ADMIN;
+        }else if(currentUser.getRole().equals(Role.USER)) {
+            return UserStatus.CREATED_USER;
+        }else{
+            return UserStatus.UNKNOWER;
         }
-        return currentUser;
     }
 
     public List<User> getAllUsers() {
@@ -63,12 +65,6 @@ public class UserService {
 
     public User getMy(){
         return currentUser;
-    }
-
-
-
-    public void setCurrentUser(User user) {
-        currentUser = user;
     }
 
     public void updateUser(User user) {

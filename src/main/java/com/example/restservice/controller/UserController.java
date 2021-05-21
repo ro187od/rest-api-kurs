@@ -1,6 +1,7 @@
 package com.example.restservice.controller;
 
 import com.example.restservice.model.User;
+import com.example.restservice.model.UserStatus;
 import com.example.restservice.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -9,6 +10,7 @@ import java.util.List;
 
 @RestController
 public class UserController {
+
     @Autowired
     private UserService userService;
 
@@ -22,13 +24,11 @@ public class UserController {
         return userService.getAllAdmins();
     }
 
-    @RequestMapping(value = "/users/login", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
+    @RequestMapping(value = "/login", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
     public @ResponseBody
-    User login(@RequestBody User user) {
-        return userService.loginUser(user);
-    }
+    UserStatus login(@RequestBody User user) { return userService.loginUser(user); }
 
-    @RequestMapping(value = "/users/my", method = RequestMethod.GET)
+    @RequestMapping(value = "/my", method = RequestMethod.GET)
     public User getMyUser(){
         return userService.getMy();
     }
@@ -44,12 +44,12 @@ public class UserController {
         userService.updateUser(user);
     }
 
-    @RequestMapping(value = "/users/{id}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/user/{id}", method = RequestMethod.DELETE)
     public @ResponseBody void remove (@PathVariable Long id) {
         userService.deleteUser(id);
     }
 
-    @RequestMapping(value = "/users/register", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
+    @RequestMapping(value = "/registreation", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
     public @ResponseBody boolean register(@RequestBody User user) {
         return userService.registerUser(user);
     }

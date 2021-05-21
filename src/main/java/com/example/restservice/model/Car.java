@@ -1,11 +1,16 @@
 package com.example.restservice.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.Set;
+import java.time.LocalDate;
 
+@Data
+@NoArgsConstructor
 @Entity
 @Table(name = "car")
 public class Car {
@@ -13,62 +18,29 @@ public class Car {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @JsonProperty("id")
     private Long id;
-    @JsonProperty("brand")
-    private String brand;
-    @JsonProperty("active")
-    private boolean active;
-    @ManyToOne
+    @JsonProperty("motor")
+    private String motor;
+    @ManyToOne(cascade=CascadeType.ALL)
     @JsonProperty("owner")
     private User owner;
+    @JsonProperty("costOfProduction")
+    private Integer costOfProduction;
+    @JsonProperty("machineModel")
+    private String machineModel;
     @JsonProperty("scope")
     private Integer scope;
+    @JsonProperty("cost")
+    private Integer cost;
+    @JsonProperty("create_date")
+    private LocalDate createDate;
 
-
-    public Car(String brand, User owner) {
-        this.active = true;
+    public Car(String motor, User owner, Integer costOfProduction, String machineModel) {
+        this.motor = motor;
         this.owner = owner;
-        this.brand = brand;
-    }
-
-    public Car(){}
-
-    public Integer getScope() {
-        return scope;
-    }
-
-    public void setScope(Integer scope) {
-        this.scope = scope;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getBrand() {
-        return brand;
-    }
-
-    public void setBrand(String brand) {
-        this.brand = brand;
-    }
-
-    public User getOwner() {
-        return owner;
-    }
-
-    public void setOwner(User owner) {
-        this.owner = owner;
-    }
-
-    public boolean isActive() {
-        return active;
-    }
-
-    public void setActive(boolean active) {
-        this.active = active;
+        this.costOfProduction = costOfProduction;
+        this.machineModel = machineModel;
+        this.cost = costOfProduction * 2;
+        this.createDate = LocalDate.now();
     }
 }
+
