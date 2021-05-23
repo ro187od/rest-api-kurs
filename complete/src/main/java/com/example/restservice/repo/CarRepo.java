@@ -13,4 +13,6 @@ public interface CarRepo extends JpaRepository<Car, Long> {
     Optional<Car> findById(Long id);
 
     List<Car> findByOwner(User currentUser);
+
+    List<Car> findByActive(boolean b);
 }

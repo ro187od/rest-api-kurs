@@ -1,6 +1,7 @@
 package com.example.restservice.controller;
 
 import com.example.restservice.model.User;
+import com.example.restservice.model.UserStatus;
 import com.example.restservice.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -9,6 +10,7 @@ import java.util.List;
 
 @RestController
 public class UserController {
+
     @Autowired
     private UserService userService;
 
@@ -22,9 +24,9 @@ public class UserController {
         return userService.getAllAdmins();
     }
 
-    @RequestMapping(value = "/users/login", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
+    @RequestMapping(value = "/login", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
     public @ResponseBody
-    User login(@RequestBody User user) {
+    UserStatus login(@RequestBody User user) {
         return userService.loginUser(user);
     }
 

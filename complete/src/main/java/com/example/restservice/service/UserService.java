@@ -2,6 +2,8 @@ package com.example.restservice.service;
 
 import com.example.restservice.model.Role;
 import com.example.restservice.model.User;
+import com.example.restservice.model.UserStatus;
+import com.example.restservice.repo.CarRepo;
 import com.example.restservice.repo.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,6 +19,8 @@ public class UserService {
     @Autowired
     private UserRepo userRepo;
 
+    @Autowired
+    private CarService carService;
 
 
     public User getOne(String username){
@@ -25,24 +29,27 @@ public class UserService {
     }
 
     public boolean registerUser(User user) {
-        if(userRepo.findByUsername(user.getUsername()) == null){
-            userRepo.save(user);
-            return true;
-        }
-        return false;
+        userRepo.save(user);
+        return true;
 
     }
 
-    public User loginUser(User user){
+    public UserStatus loginUser(User user){
         currentUser = userRepo.findByUsername(user.getUsername());
-        if(userRepo.findByUsername(user.getUsername()) == null){
-            return null;
+        if(currentUser.getRole().equals(Role.ADMIN)){
+            return UserStatus.CREATED_ADMIN;
+        }else if(currentUser.getRole().equals(Role.USER)) {
+            return UserStatus.CREATED_USER;
+        }else{
+            return UserStatus.UNKNOWER;
         }
-        return currentUser;
     }
 
     public List<User> getAllUsers() {
         List<User> usersList = userRepo.findAllByRole(Role.USER);
+        for(User user : usersList){
+            user.setNumberMachines(carService.getNumberMachinesUser(user));
+        }
         return usersList;
     }
 
@@ -67,5 +74,15 @@ public class UserService {
 
     public void updateUser(User user) {
         userRepo.save(user);
+    }
+
+    public void save(User user) {
+        User user1 = userRepo.findByUsername(user.getUsername());
+        userRepo.save(user);
+    }
+
+    public void payForParking(String username, Integer costParking) {
+        currentUser.pay(costParking);
+        userRepo.save(currentUser);
     }
 }
