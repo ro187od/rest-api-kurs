@@ -46,6 +46,11 @@ public class UserController {
         userService.updateUser(user);
     }
 
+    @RequestMapping(value = "/user/cashIn/{id}", method = RequestMethod.PUT, consumes = "application/json", produces = "application/json")
+    public @ResponseBody void cashIn(@RequestBody User user) {
+        userService.cashIn(user);
+    }
+
     @RequestMapping(value = "/users/{id}", method = RequestMethod.DELETE)
     public @ResponseBody void remove (@PathVariable Long id) {
         userService.deleteUser(id);

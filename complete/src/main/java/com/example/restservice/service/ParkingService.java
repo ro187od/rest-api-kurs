@@ -87,7 +87,7 @@ public class ParkingService {
     }
 
     private Parking getParking(Car car) {
-        Parking parking = parkingRepo.getOne(1L);
+        Parking parking = parkingRepo.getOne(3L);
         return parking;
     }
 }

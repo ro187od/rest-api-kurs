@@ -6,6 +6,7 @@ import com.example.restservice.model.UserStatus;
 import com.example.restservice.repo.CarRepo;
 import com.example.restservice.repo.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,7 +23,6 @@ public class UserService {
     @Autowired
     private CarService carService;
 
-
     public User getOne(String username){
         User user = userRepo.findByUsername(username);
         return user;
@@ -35,11 +35,15 @@ public class UserService {
     }
 
     public UserStatus loginUser(User user){
-        currentUser = userRepo.findByUsername(user.getUsername());
-        if(currentUser.getRole().equals(Role.ADMIN)){
-            return UserStatus.CREATED_ADMIN;
-        }else if(currentUser.getRole().equals(Role.USER)) {
-            return UserStatus.CREATED_USER;
+        if (userRepo.findByUsername(user.getUsername()) != null){
+            currentUser = userRepo.findByUsername(user.getUsername());
+            if(currentUser.getRole().equals(Role.ADMIN ) && currentUser.getPassword().equals(user.getPassword())){
+                return UserStatus.CREATED_ADMIN;
+            }else if(currentUser.getRole().equals(Role.USER) && currentUser.getPassword().equals(user.getPassword())) {
+                return UserStatus.CREATED_USER;
+            }else{
+                return UserStatus.INCORRECT_DATA;
+            }
         }else{
             return UserStatus.UNKNOWER;
         }
@@ -76,6 +80,8 @@ public class UserService {
         userRepo.save(user);
     }
 
+
+
     public void save(User user) {
         User user1 = userRepo.findByUsername(user.getUsername());
         userRepo.save(user);
@@ -85,4 +91,10 @@ public class UserService {
         currentUser.pay(costParking);
         userRepo.save(currentUser);
     }
+
+    public void cashIn(User user) {
+        user.setMoneyInAccount(user.getMoneyInAccount() + 100);
+        userRepo.save(user);
+    }
+
 }
