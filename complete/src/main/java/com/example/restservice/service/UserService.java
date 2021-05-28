@@ -94,6 +94,8 @@ public class UserService {
 
     public void cashIn(User user) {
         user.setMoneyInAccount(user.getMoneyInAccount() + 100);
+        System.out.println(user.getMoneyInAccount());
+        currentUser = user;
         userRepo.save(user);
     }
 

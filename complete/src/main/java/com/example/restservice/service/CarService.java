@@ -2,6 +2,7 @@ package com.example.restservice.service;
 
 import com.example.restservice.model.Car;
 import com.example.restservice.model.Parking;
+import com.example.restservice.model.Role;
 import com.example.restservice.model.User;
 import com.example.restservice.repo.CarRepo;
 import com.example.restservice.repo.ParkingRepo;
@@ -18,6 +19,9 @@ public class CarService {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private ParkingService parkingService;
 
     @Autowired
     private CarRepo carRepo;
@@ -37,6 +41,10 @@ public class CarService {
 
     public boolean createCar(Car car) {
         carRepo.save(car);
+        List<Car> cars = carRepo.findAll();
+        if (cars.get(cars.size() - 1).getOwner().getRole() == Role.ADMIN){
+            parkingService.addCar(car);
+        }
         return true;
     }
 

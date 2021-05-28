@@ -2,6 +2,8 @@ package com.example.restservice.service;
 
 import com.example.restservice.model.Car;
 import com.example.restservice.model.Parking;
+import com.example.restservice.model.Role;
+import com.example.restservice.model.User;
 import com.example.restservice.repo.CarRepo;
 import com.example.restservice.repo.ParkingRepo;
 import com.example.restservice.repo.UserRepo;
@@ -40,8 +42,21 @@ public class ParkingService {
     }
 
     public List<Car> getAllCarsParking(Long id) {
-        Optional<Parking> parking = parkingRepo.findById(id);
-        return parking.get().getCars();
+        Parking parking = parkingRepo.findById(id).get();
+        setCarsAdminInParking(parking);
+        return parking.getCars();
+    }
+
+    private void setCarsAdminInParking(Parking parking) {
+        User admin = userRepo.findById(1L).get();
+        List<Car> cars = carRepo.findAll();
+        List<Car> cars_parking = parking.getCars();
+        cars.forEach( car -> {
+            if (cars_parking.size() == 0 && car.getOwner().getRole().equals(Role.ADMIN)){
+                parking.getCars().add(car);
+            }
+        });
+
     }
 
     public void deleteCar(Long id_parking, Long id_car) {
@@ -75,13 +90,14 @@ public class ParkingService {
             parking.addCar(car);
             carAddParking(car, parking);
             parkingRepo.save(parking);
-
         }
     }
 
     private void carAddParking(Car car, Parking parking) {
         car.setParking_id(parking.getId());
-        car.getOwner().setMoneyInAccount(car.getOwner().getMoneyInAccount() - parking.getCostParking());
+        if(!car.getOwner().getRole().equals(Role.ADMIN)){
+            car.getOwner().setMoneyInAccount(car.getOwner().getMoneyInAccount() - parking.getCostParking());
+        }
         userRepo.save(car.getOwner());
         carRepo.save(car);
     }
