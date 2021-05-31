@@ -21,11 +21,6 @@ public class CarController {
         return carService.getAllCars();
     }
 
-    @RequestMapping(value = "/cars/active", method = RequestMethod.GET)
-    public List<Car> getAllActive(){
-        return carService.getAllCarsActive();
-    }
-
     @RequestMapping(value = "/car/create", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
     public @ResponseBody boolean register(@RequestBody Car car) {
         return carService.createCar(car);
@@ -46,23 +41,9 @@ public class CarController {
         return carService.getAllMyCars();
     }
 
-    @RequestMapping(value = "/car/deactivate/{id}", method = RequestMethod.PUT, consumes = "application/json", produces = "application/json")
-    public @ResponseBody void deactivate(@PathVariable Long id, @RequestBody Car car) {
-        carService.deactivateCar(car);
-    }
-
-    @RequestMapping(value = "/car/activate/{id}", method = RequestMethod.PUT, consumes = "application/json", produces = "application/json")
-    public @ResponseBody void activate(@PathVariable Long id, @RequestBody Car car) {
-        carService.activateCar(car);
-    }
-
     @RequestMapping(value = "/car/add/scope", method = RequestMethod.PUT, consumes = "application/json", produces = "application/json")
     public @ResponseBody void addScope(@RequestBody Car car) {
         carService.addScope(car);
     }
 
-    @RequestMapping(value = "/arithmetic/mean", method = RequestMethod.GET)
-    public Integer arithmeticMean(){
-        return carService.getArithmeticMean();
-    }
 }

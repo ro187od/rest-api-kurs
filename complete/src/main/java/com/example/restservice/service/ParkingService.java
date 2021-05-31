@@ -28,16 +28,13 @@ public class ParkingService {
     @Autowired
     private UserRepo userRepo;
 
-    public List<Parking> getAllParkings() {
-        return parkingRepo.findAll();
-    }
-
     public boolean createParking(Parking parking) {
         parkingRepo.save(parking);
         return true;
     }
 
     public Optional<Parking> getParking(Long id) {
+
         return parkingRepo.findById(id);
     }
 

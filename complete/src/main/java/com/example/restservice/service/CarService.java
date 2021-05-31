@@ -64,46 +64,14 @@ public class CarService {
         return carRepo.findByOwner(userService.getMy());
     }
 
-    public void deactivateCar(Car car) {
-        if (validationService.validateUserCar(car.getOwner())){
-            car.setActive(false);
-            carRepo.save(car);
-        }
-    }
-
-    public void activateCar(Car car) {
-        if (validationService.validateUserCar(car.getOwner())) {
-            Parking parking = parkingRepo.getOne(1L);
-            car.setParking_id(parking.getId());
-            parking.addCar(car);
-            car.getOwner().setMoneyInAccount(car.getOwner().getMoneyInAccount() - parking.getCostParking());
-            userRepo.save(car.getOwner());
-            parkingRepo.save(parking);
-            carRepo.save(car);
-        }
-    }
 
     public void addScope(Car car) {
         car.setActive(false);
         carRepo.save(car);
     }
 
-    public Integer getArithmeticMean() {
-        Integer result = 0;
-        List<Car> cars = getAllMyCars();
-        for(Car car : cars){
-            result += car.getScope();
-
-        }
-        return result / cars.size();
-    }
-
     public Integer getNumberMachinesUser(User user) {
         List<Car> cars = carRepo.findByOwner(user);
         return cars.size();
-    }
-
-    public List<Car> getAllCarsActive() {
-        return carRepo.findByActive(true);
     }
 }

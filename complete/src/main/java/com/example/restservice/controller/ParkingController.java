@@ -14,11 +14,6 @@ public class ParkingController {
     @Autowired
     private ParkingService parkingService;
 
-    @RequestMapping(value = "/parkings", method = RequestMethod.GET)
-    public List<Parking> getAllParkings() {
-        return parkingService.getAllParkings();
-    }
-
     @RequestMapping(value = "/parking/{id}", method = RequestMethod.GET)
     public Optional<Parking> getAllParkings(@PathVariable Long id) {
         return parkingService.getParking(id);
