@@ -66,7 +66,6 @@ public class CarService {
 
 
     public void addScope(Car car) {
-        car.setActive(false);
         carRepo.save(car);
     }
 

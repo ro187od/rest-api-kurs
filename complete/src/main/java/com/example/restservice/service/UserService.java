@@ -80,12 +80,6 @@ public class UserService {
         userRepo.save(user);
     }
 
-    public void save(User user) {
-        User user1 = userRepo.findByUsername(user.getUsername());
-        userRepo.save(user);
-    }
-
-
     public void cashIn(User user) {
         user.setMoneyInAccount(user.getMoneyInAccount() + 100);
         System.out.println(user.getMoneyInAccount());

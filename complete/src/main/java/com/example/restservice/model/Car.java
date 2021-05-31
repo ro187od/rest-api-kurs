@@ -17,8 +17,6 @@ public class Car {
     private Long id;
     @JsonProperty("brand")
     private String brand;
-    @JsonProperty("active")
-    private boolean active;
     @JsonProperty("serialCarNumber")
     private String serialNumber;
     @ManyToOne
@@ -31,7 +29,6 @@ public class Car {
 
 
     public Car(String brand, String serialNumber, User owner) {
-        this.active = true;
         this.owner = owner;
         this.brand = brand;
         this.serialNumber = serialNumber;
